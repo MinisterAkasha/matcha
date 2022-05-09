@@ -1,3 +1,5 @@
 export enum RoutesPath {
-	HOME = '/',
+	MAIN = '/',
+	LOGIN = 'login',
+	SIGN_UP = 'signup',
 }

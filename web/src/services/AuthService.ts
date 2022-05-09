@@ -4,7 +4,7 @@ import { User } from '../models/user';
 
 export const authAPI = createApi({
 	reducerPath: 'authAPI',
-	tagTypes: ['Auth'],
+	tagTypes: ['current_user'],
 	baseQuery: fetchBaseQuery({
 		baseUrl: 'https://jsonplaceholder.typicode.com',
 		prepareHeaders: (headers) => {
@@ -26,28 +26,28 @@ export const authAPI = createApi({
 					id,
 				},
 			}),
-			providesTags: (result) => ['Auth'],
+			providesTags: (result) => ['current_user'],
 		}),
 		logIn: build.mutation<User, string>({
 			query: () => ({
 				url: EndPoints.LOG_IN,
 				method: 'POST',
 			}),
-			invalidatesTags: ['Auth'],
+			invalidatesTags: ['current_user'],
 		}),
 		logOut: build.mutation<null, null>({
 			query: () => ({
 				url: EndPoints.LOG_OUT,
 				method: 'POST',
 			}),
-			invalidatesTags: ['Auth'],
+			invalidatesTags: ['current_user'],
 		}),
 		signUp: build.mutation<User, string>({
 			query: () => ({
 				url: EndPoints.SIGN_UP,
 				method: 'POST',
 			}),
-			invalidatesTags: ['Auth'],
+			invalidatesTags: ['current_user'],
 		}),
 	}),
 });
