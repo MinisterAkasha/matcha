@@ -1,7 +1,8 @@
 import React from 'react';
+import Routing from './Routing/Routing';
 
-function App() {
-	return <h1>Matcha</h1>;
-}
+const App = () => {
+	return <Routing />;
+};
 
 export default App;
