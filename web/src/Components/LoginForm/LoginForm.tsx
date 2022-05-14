@@ -9,6 +9,7 @@ import { Input, PasswordInput } from '../Input/Input';
 import { useFormDisabled } from '../../hooks/useFormDisabled';
 import Loader from '../Loader/Loader';
 import { useLogInMutation } from '../../services/AuthService';
+import { useToken } from '../../hooks/useToken';
 
 const Container = styled(CommonContainer)`
 	left: 0;
@@ -20,10 +21,12 @@ const LoginForm = () => {
 	const [form] = Form.useForm();
 	const [login, { isLoading, isError }] = useLogInMutation();
 	const { disabled, handleFormChange } = useFormDisabled(form);
+	const { setToken } = useToken();
 
 	const onFinish = useCallback(async () => {
 		const { email, password } = form.getFieldsValue();
 		await login({ email, password });
+		setToken('123');
 	}, []);
 
 	return (

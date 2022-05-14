@@ -3,6 +3,8 @@ import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import SignUpForm from '../../Components/SignUpForm/SignUpForm';
 import LoginForm from '../../Components/LoginForm/LoginForm';
 import Button from '../../Components/Button/Button';
+import { useAccessibleRoute } from '../../hooks/useAccessibleRoute';
+import { RoutesPath } from '../../Routing/Routes';
 
 type SideType = 'left' | 'right';
 
