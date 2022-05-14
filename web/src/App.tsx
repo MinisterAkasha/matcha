@@ -1,9 +1,15 @@
 import React from 'react';
 import Routing from './Routing/Routing';
-import { authAPI } from './services/AuthService';
+import 'antd/dist/antd.css';
+import { GlobalStyles } from './Components/GlobalStyles/GlobalStyles';
 
 const App = () => {
-	return <Routing />;
+	return (
+		<>
+			<GlobalStyles />
+			<Routing />
+		</>
+	);
 };
 
 export default App;

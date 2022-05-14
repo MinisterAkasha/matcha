@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { EndPoints } from '../api/endpoints';
 import { User } from '../models/user';
+import { LoginData } from '../models/auth';
 
 export const authAPI = createApi({
 	reducerPath: 'authAPI',
 	tagTypes: ['current_user'],
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://jsonplaceholder.typicode.com',
+		baseUrl: 'http://localhost:5000/',
 		prepareHeaders: (headers) => {
 			const token = localStorage.getItem('access_token');
 
@@ -28,10 +29,11 @@ export const authAPI = createApi({
 			}),
 			providesTags: (result) => ['current_user'],
 		}),
-		logIn: build.mutation<User, string>({
-			query: () => ({
+		logIn: build.mutation<User, LoginData>({
+			query: (data) => ({
 				url: EndPoints.LOG_IN,
 				method: 'POST',
+				body: data,
 			}),
 			invalidatesTags: ['current_user'],
 		}),
@@ -42,12 +44,15 @@ export const authAPI = createApi({
 			}),
 			invalidatesTags: ['current_user'],
 		}),
-		signUp: build.mutation<User, string>({
-			query: () => ({
+		signUp: build.mutation<User, any>({
+			query: (user) => ({
 				url: EndPoints.SIGN_UP,
 				method: 'POST',
+				body: user,
 			}),
 			invalidatesTags: ['current_user'],
 		}),
 	}),
 });
+
+export const { useGetUserQuery, useLogInMutation, useLogOutMutation, useSignUpMutation } = authAPI;
