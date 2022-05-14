@@ -8,7 +8,7 @@ import ru.matcha.exceptions.LogOutException;
 import ru.matcha.exceptions.TokenRefreshException;
 import ru.matcha.mappers.TokenMapper;
 import ru.matcha.models.entities.RefreshToken;
-import ru.matcha.models.responces.jwt.TokenRefreshResponse;
+import ru.matcha.models.responces.jwt.TokenResponse;
 import ru.matcha.repositories.RefreshTokenRepository;
 import ru.matcha.repositories.UserRepository;
 import ru.matcha.services.RefreshTokenService;
@@ -57,7 +57,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public TokenRefreshResponse updateToken(String requestRefreshToken) {
+    public TokenResponse updateToken(String requestRefreshToken) {
         return refreshTokenRepository.findByToken(requestRefreshToken)
                 .map(this::verifyExpiration)
                 .map(RefreshToken::getUser)

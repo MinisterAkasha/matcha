@@ -1,7 +1,7 @@
 package ru.matcha.services;
 
 import ru.matcha.models.entities.RefreshToken;
-import ru.matcha.models.responces.jwt.TokenRefreshResponse;
+import ru.matcha.models.responces.jwt.TokenResponse;
 
 import javax.transaction.Transactional;
 
@@ -12,5 +12,5 @@ public interface RefreshTokenService {
     @Transactional
     void deleteByUserId(Long userId);
 
-    TokenRefreshResponse updateToken(String requestRefreshToken);
+    TokenResponse updateToken(String requestRefreshToken);
 }

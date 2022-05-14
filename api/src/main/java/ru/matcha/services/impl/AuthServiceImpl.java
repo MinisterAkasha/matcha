@@ -10,19 +10,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.matcha.config.jwt.JwtUtils;
 import ru.matcha.exceptions.EmailAlreadyExistsException;
+import ru.matcha.mappers.TokenMapper;
 import ru.matcha.mappers.UserMapper;
 import ru.matcha.models.entities.RefreshToken;
 import ru.matcha.models.entities.Role;
 import ru.matcha.models.entities.User;
-import ru.matcha.models.entities.UserRole;
+import ru.matcha.models.dto.RoleDto;
 import ru.matcha.models.requests.LoginRequest;
 import ru.matcha.models.requests.SignupRequest;
 import ru.matcha.models.responces.UserResponse;
-import ru.matcha.models.responces.UserJwtResponse;
+import ru.matcha.models.responces.jwt.TokenResponse;
 import ru.matcha.repositories.UserRepository;
 import ru.matcha.services.AuthService;
 import ru.matcha.services.RefreshTokenService;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 
 @Log4j2
@@ -38,24 +40,25 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final RefreshTokenService refreshTokenService;
+    private final TokenMapper tokenMapper;
 
     @Override
-    public UserResponse registerUser(SignupRequest signUpRequest) throws EmailAlreadyExistsException {
+    public TokenResponse registerUser(SignupRequest signUpRequest) throws EmailAlreadyExistsException {
         if (userRepository.existsByEmail(signUpRequest.getEmail()).equals(true)) {
             throw new EmailAlreadyExistsException(String.format(EMAIL_ALREADY_EXISTS, signUpRequest.getEmail()));
         }
 
-        User user = userRepository.save(
+        userRepository.save(
                 userMapper.toEntity(signUpRequest, encoder.encode(signUpRequest.getPassword()),
                         true,
-                        Collections.singleton(new Role(2L, UserRole.USER)))
+                        Collections.singleton(new Role(2L, RoleDto.USER)))
         );
 
-        return userMapper.toUserRs(user);
+        return authenticateUser(userMapper.toLoginRq(signUpRequest));
     }
 
     @Override
-    public UserJwtResponse authenticateUser(LoginRequest loginRequest) {
+    public TokenResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication userDetails = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(userDetails);
@@ -66,6 +69,20 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenService.deleteByUserId(user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return userMapper.toUserJwtRs(user, jwt, refreshToken.getToken());
+        return tokenMapper.toRs(jwt, refreshToken.getToken());
+    }
+
+    @Override
+    @Transactional
+    public void logout(User user) {
+        if (user == null)
+            return;
+        refreshTokenService.deleteByUserId(user.getId());
+        SecurityContextHolder.clearContext();
+    }
+
+    @Override
+    public UserResponse getCurrentUser(User user) {
+        return userMapper.toUserRs(user);
     }
 }

@@ -17,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "t_user",
         uniqueConstraints = {
+        @UniqueConstraint(columnNames = "id"),
         @UniqueConstraint(columnNames = "email")})
 public class User implements UserDetails {
 
@@ -34,6 +35,8 @@ public class User implements UserDetails {
     private Set<Role> authorities = new HashSet<>();
     private boolean active;
     private boolean enabled;
+    @ManyToOne
+    private Gender gender;
 
     @Override
     public boolean isAccountNonExpired() {
