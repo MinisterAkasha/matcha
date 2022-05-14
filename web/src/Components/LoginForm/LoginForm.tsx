@@ -10,6 +10,7 @@ import { useFormDisabled } from '../../hooks/useFormDisabled';
 import Loader from '../Loader/Loader';
 import { useLogInMutation } from '../../services/AuthService';
 import { useToken } from '../../hooks/useToken';
+import { useAuth } from '../../hooks/useAuth';
 
 const Container = styled(CommonContainer)`
 	left: 0;
@@ -19,14 +20,12 @@ const Container = styled(CommonContainer)`
 
 const LoginForm = () => {
 	const [form] = Form.useForm();
-	const [login, { isLoading, isError }] = useLogInMutation();
 	const { disabled, handleFormChange } = useFormDisabled(form);
-	const { setToken } = useToken();
+	const { login } = useAuth();
 
 	const onFinish = useCallback(async () => {
 		const { email, password } = form.getFieldsValue();
-		await login({ email, password });
-		setToken('123');
+		await login.request({ email, password });
 	}, []);
 
 	return (
@@ -46,7 +45,7 @@ const LoginForm = () => {
 					<PasswordInput placeholder="Пароль" />
 				</Form.Item>
 				<Link to={RoutesPath.RESET_PASSWORD}>Забыли пароль?</Link>
-				<Button disabled={disabled}>{isLoading ? <Loader /> : 'Отправить'}</Button>
+				<Button disabled={disabled}>{login.isLoading ? <Loader /> : 'Отправить'}</Button>
 			</StyledForm>
 		</Container>
 	);

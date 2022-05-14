@@ -8,6 +8,7 @@ import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import { Input, PasswordInput } from '../Input/Input';
 import { useFormDisabled } from '../../hooks/useFormDisabled';
+import { useAuth } from '../../hooks/useAuth';
 
 export const CommonContainer = styled.div`
 	height: 100%;
@@ -58,12 +59,12 @@ export const validateMessages = {
 
 const SignUpForm = () => {
 	const [form] = Form.useForm();
-	const [signUp, { isLoading, isError }] = useSignUpMutation();
 	const { disabled, handleFormChange } = useFormDisabled(form);
+	const { signup } = useAuth();
 
 	const onFinish = useCallback(async () => {
-		const { email, password } = form.getFieldsValue();
-		await signUp({ email, password });
+		const { email, password, name } = form.getFieldsValue();
+		await signup.request({ email, password, name });
 	}, []);
 
 	return (
@@ -88,7 +89,7 @@ const SignUpForm = () => {
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit" disabled={disabled} className="btn">
-						{isLoading ? <Loader /> : 'Отправить'}
+						{signup.isLoading ? <Loader /> : 'Отправить'}
 					</Button>
 				</Form.Item>
 			</StyledForm>

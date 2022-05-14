@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { EndPoints } from '../api/endpoints';
 import { User } from '../models/user';
-import { LoginData } from '../models/auth';
+import { LoginRequestData, LoginResponseData, SignupData } from '../models/auth';
 
 export const authAPI = createApi({
 	reducerPath: 'authAPI',
@@ -29,7 +29,7 @@ export const authAPI = createApi({
 			}),
 			providesTags: (result) => ['current_user'],
 		}),
-		logIn: build.mutation<User, LoginData>({
+		logIn: build.mutation<LoginResponseData, LoginRequestData>({
 			query: (data) => ({
 				url: EndPoints.LOG_IN,
 				method: 'POST',
@@ -44,7 +44,7 @@ export const authAPI = createApi({
 			}),
 			invalidatesTags: ['current_user'],
 		}),
-		signUp: build.mutation<User, any>({
+		signUp: build.mutation<LoginResponseData, SignupData>({
 			query: (user) => ({
 				url: EndPoints.SIGN_UP,
 				method: 'POST',

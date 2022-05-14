@@ -1,31 +1,6 @@
 {
   "users": [],
   "sign_up": [],
-  "login": [
-    {
-      "email": "123@mail.ru",
-      "password": "123",
-      "id": 1
-    },
-    {
-      "email": "123@mail.ru",
-      "password": "123",
-      "id": 2
-    },
-    {
-      "email": "123@mail.ru",
-      "password": "123",
-      "id": 3
-    },
-    {
-      "email": "123@mail.ru",
-      "password": "123",
-      "id": 4
-    },
-    {
-      "email": "123@mail.ru",
-      "password": "123",
-      "id": 5
-    }
-  ]
+  "login": [],
+  "logout": []
 }

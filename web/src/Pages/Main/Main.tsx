@@ -1,9 +1,12 @@
 import React from 'react';
-import { useAccessibleRoute } from '../../hooks/useAccessibleRoute';
-import { RoutesPath } from '../../Routing/Routes';
+import Layout from '../../Components/Layout/Layout';
 
 const Main = () => {
-	return <h1>Main</h1>;
+	return (
+		<Layout>
+			<h1>Main</h1>
+		</Layout>
+	);
 };
 
 export default Main;

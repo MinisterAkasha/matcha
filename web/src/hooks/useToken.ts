@@ -4,22 +4,25 @@ import { setCredentials } from '../store/redusers/auth';
 
 export const useToken = () => {
 	const getToken = () => {
-		return localStorage.getItem('access_token');
+		return {
+			accessToken: localStorage.getItem('access_token'),
+			refreshToken: localStorage.getItem('refresh_token'),
+		};
 	};
 
 	const { token } = useAppSelector((store) => store.token);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		const userToken = getToken();
+		const { accessToken, refreshToken } = getToken();
 
-		if (token) {
-			dispatch(setCredentials({ token: userToken || '' }));
+		if (accessToken && !token) {
+			dispatch(setCredentials({ token: accessToken || '', refreshToken: refreshToken || '' }));
 		}
 	});
 
-	const saveToken = (userToken: string) => {
-		dispatch(setCredentials({ token: userToken }));
+	const saveToken = (userToken: string, refreshToken: string) => {
+		dispatch(setCredentials({ token: userToken, refreshToken }));
 	};
 
 	return {
