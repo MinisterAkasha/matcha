@@ -1,8 +1,10 @@
 package ru.matcha.models.entities;
 
 import lombok.*;
+import ru.matcha.models.dto.MessageStatus;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -22,4 +24,8 @@ public class Message {
     private User recipient;
     @Column(nullable = false)
     private String content;
+    @Column(nullable = false)
+    private Date timestamp;
+    @Column(nullable = false)
+    private MessageStatus status;
 }
