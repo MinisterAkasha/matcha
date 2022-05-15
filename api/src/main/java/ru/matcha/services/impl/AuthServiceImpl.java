@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.matcha.config.jwt.JwtUtils;
 import ru.matcha.exceptions.EmailAlreadyExistsException;
+import ru.matcha.exceptions.LogOutException;
 import ru.matcha.mappers.TokenMapper;
 import ru.matcha.mappers.UserMapper;
 import ru.matcha.models.entities.RefreshToken;
@@ -33,6 +34,7 @@ import java.util.Collections;
 public class AuthServiceImpl implements AuthService {
 
     private static final String EMAIL_ALREADY_EXISTS = "Пользователь с email %s уже зарегистрирован.";
+    private static final String LOGOUT_ERROR = "Ошибка при выходе";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -61,13 +63,13 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication userDetails = authenticationManager.authenticate(authentication);
-        SecurityContextHolder.getContext().setAuthentication(userDetails);
+//        SecurityContextHolder.getContext().setAuthentication(userDetails);
         User user = (User) userDetails.getPrincipal();
 
         String jwt = jwtUtils.generateJwtToken(user);
 
         refreshTokenService.deleteByUserId(user.getId());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
         return tokenMapper.toRs(jwt, refreshToken.getToken());
     }
@@ -76,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void logout(User user) {
         if (user == null)
-            return;
+            throw new LogOutException(LOGOUT_ERROR);
         refreshTokenService.deleteByUserId(user.getId());
         SecurityContextHolder.clearContext();
     }

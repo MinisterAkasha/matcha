@@ -2,6 +2,7 @@ package ru.matcha.models.responces;
 
 import lombok.Value;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Value
@@ -12,4 +13,11 @@ public class UserResponse {
     Set<String> roles;
     boolean enabled;
     boolean active;
+    String gender;
+    String orientation;
+    Set<String> preferences;
+    LocalDate birthday;
+    String description;
+    String longitude;
+    String latitude;
 }

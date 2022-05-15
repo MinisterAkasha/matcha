@@ -4,24 +4,21 @@ import lombok.*;
 import ru.matcha.models.dto.GenderDto;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"name"})
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "t_gender",
-        uniqueConstraints = {
-        @UniqueConstraint(columnNames = "id"),
-        @UniqueConstraint(columnNames = "name")})
-public class Gender {
+@EqualsAndHashCode(of = {"id", "name"})
+@RequiredArgsConstructor
+@Entity(name = "t_gender")
+public class Gender implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = 20, nullable = false, unique = true)
     private GenderDto name;
     @OneToMany(mappedBy = "gender")
     private Set<User> users;

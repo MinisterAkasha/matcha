@@ -1,28 +1,25 @@
 package ru.matcha.models.entities;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import ru.matcha.models.dto.RoleDto;
+import ru.matcha.models.dto.OrientationDto;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id", "name"})
 @RequiredArgsConstructor
-@AllArgsConstructor
-@Entity(name = "t_role")
-public class Role implements GrantedAuthority {
+@Entity(name = "t_orientation")
+public class Orientation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false, unique = true)
-    private RoleDto name;
-
-    @Override
-    public String getAuthority() {
-        return name.name();
-    }
+    private OrientationDto name;
+    @OneToMany(mappedBy = "orientation")
+    private Set<User> users;
 }

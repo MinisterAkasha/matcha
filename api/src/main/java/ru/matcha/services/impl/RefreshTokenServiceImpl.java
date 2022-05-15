@@ -8,6 +8,7 @@ import ru.matcha.exceptions.LogOutException;
 import ru.matcha.exceptions.TokenRefreshException;
 import ru.matcha.mappers.TokenMapper;
 import ru.matcha.models.entities.RefreshToken;
+import ru.matcha.models.entities.User;
 import ru.matcha.models.responces.jwt.TokenResponse;
 import ru.matcha.repositories.RefreshTokenRepository;
 import ru.matcha.repositories.UserRepository;
@@ -33,21 +34,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final TokenMapper tokenMapper;
 
     @Override
-    public RefreshToken createRefreshToken(Long userId) {
+    public RefreshToken createRefreshToken(User user) {
         return refreshTokenRepository.save(
-                tokenMapper.toEntity(userRepository.findById(userId).orElse(null),
+                tokenMapper.toEntity(user,
                 UUID.randomUUID().toString(),
                 Instant.now().plusMillis(refreshTokenDurationMs))
         );
-    }
-
-    private RefreshToken verifyExpiration(RefreshToken token) {
-        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-            refreshTokenRepository.delete(token);
-            throw new TokenRefreshException(REFRESH_TOKEN_EXPIRED);
-        }
-
-        return token;
     }
 
     @Override
@@ -63,5 +55,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .map(RefreshToken::getUser)
                 .map(user -> tokenMapper.toRs(jwtUtils.generateTokenFromEmail(user.getEmail()), requestRefreshToken))
                 .orElseThrow(() -> new TokenRefreshException(REFRESH_TOKEN_NOT_FOUND));
+    }
+
+    private RefreshToken verifyExpiration(RefreshToken token) {
+        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+            refreshTokenRepository.delete(token);
+            throw new TokenRefreshException(REFRESH_TOKEN_EXPIRED);
+        }
+
+        return token;
     }
 }
