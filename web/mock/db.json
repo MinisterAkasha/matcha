@@ -2,5 +2,27 @@
   "users": [],
   "sign_up": [],
   "login": [],
-  "logout": []
+  "get_current_user": {
+    "email": "123@mail.ru",
+    "name": "Ilya Gusev",
+    "role": "USER",
+    "gender": "MAN",
+    "age": "23",
+    "description": "Nice nice nice",
+    "enable": true,
+    "orientation": ")))",
+    "geo": {
+      "latitude": "123",
+      "longitude": "456"
+    },
+    "tags": [
+      "1",
+      "2",
+      "3"
+    ],
+    "likes": null,
+    "block": null,
+    "history": [],
+    "id": "uuid"
+  }
 }
