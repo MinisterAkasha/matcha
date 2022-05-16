@@ -1,58 +1,37 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
-import { EndPoints } from '../api/endpoints';
-import { User } from '../models/user';
-import { LoginRequestData, LoginResponseData, SignupData } from '../models/auth';
+import { BASE_URL, EndPoints } from '../http/endpoints';
+import { LoginRequestData, TokenData, SignupData } from '../models/auth';
+import { baseQueryWithReauth } from '../http/interceptor';
 
 export const authAPI = createApi({
 	reducerPath: 'authAPI',
-	tagTypes: ['current_user'],
-	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:5000/',
-		prepareHeaders: (headers) => {
-			const token = localStorage.getItem('access_token');
-
-			if (token) {
-				headers.set('authorization', `Bearer ${token}`);
-			}
-
-			return headers;
-		},
-	}),
+	tagTypes: ['auth'],
+	baseQuery: baseQueryWithReauth,
 	endpoints: (build) => ({
-		getUser: build.query<User, string>({
-			query: (id) => ({
-				// url: EndPoints.GET_USER,
-				url: `/users/${id}`,
-				params: {
-					id,
-				},
-			}),
-			providesTags: (result) => ['current_user'],
-		}),
-		logIn: build.mutation<LoginResponseData, LoginRequestData>({
+		logIn: build.mutation<TokenData, LoginRequestData>({
 			query: (data) => ({
 				url: EndPoints.LOG_IN,
 				method: 'POST',
 				body: data,
 			}),
-			invalidatesTags: ['current_user'],
+			invalidatesTags: ['auth'],
 		}),
 		logOut: build.mutation<null, null>({
 			query: () => ({
 				url: EndPoints.LOG_OUT,
 				method: 'POST',
 			}),
-			invalidatesTags: ['current_user'],
+			invalidatesTags: ['auth'],
 		}),
-		signUp: build.mutation<LoginResponseData, SignupData>({
+		signUp: build.mutation<TokenData, SignupData>({
 			query: (user) => ({
 				url: EndPoints.SIGN_UP,
 				method: 'POST',
 				body: user,
 			}),
-			invalidatesTags: ['current_user'],
+			invalidatesTags: ['auth'],
 		}),
 	}),
 });
 
-export const { useGetUserQuery, useLogInMutation, useLogOutMutation, useSignUpMutation } = authAPI;
+export const { useLogInMutation, useLogOutMutation, useSignUpMutation } = authAPI;

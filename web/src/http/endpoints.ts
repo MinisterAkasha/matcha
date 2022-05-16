@@ -1,3 +1,5 @@
+export const BASE_URL = 'http://localhost:5000/';
+
 export enum EndPoints {
 	LOG_IN = '/login',
 	LOG_OUT = '/logout',

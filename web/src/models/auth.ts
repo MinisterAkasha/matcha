@@ -7,7 +7,7 @@ export interface SignupData extends LoginRequestData {
 	name: string;
 }
 
-export interface LoginResponseData {
+export interface TokenData {
 	access_token: string;
 	refresh_token: string;
 }
