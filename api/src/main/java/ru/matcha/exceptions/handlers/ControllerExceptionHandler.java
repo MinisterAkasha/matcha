@@ -11,6 +11,8 @@ import ru.matcha.exceptions.EmailAlreadyExistsException;
 import ru.matcha.exceptions.TokenRefreshException;
 import ru.matcha.models.responces.ResponseMessage;
 
+import javax.security.auth.login.LoginException;
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -53,6 +55,15 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseMessage handlerUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ResponseMessage.builder()
+                .message(ex.getMessage())
+                .errorCode(HttpStatus.UNAUTHORIZED.value())
+                .build();
+    }
+
+    @ExceptionHandler(LoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseMessage handlerLoginException(LoginException ex) {
         return ResponseMessage.builder()
                 .message(ex.getMessage())
                 .errorCode(HttpStatus.UNAUTHORIZED.value())

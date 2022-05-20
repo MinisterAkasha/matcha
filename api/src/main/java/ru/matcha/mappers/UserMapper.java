@@ -6,7 +6,7 @@ import ru.matcha.models.entities.Role;
 import ru.matcha.models.entities.User;
 import ru.matcha.models.requests.LoginRequest;
 import ru.matcha.models.requests.SignupRequest;
-import ru.matcha.models.responces.UserResponse;
+import ru.matcha.models.responces.CurrentUserResponse;
 
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 public interface UserMapper {
 
     @Mapping(target = "roles", source = "user.authorities")
-    UserResponse toUserRs(User user);
+    CurrentUserResponse toUserRs(User user);
 
     @Mapping(target = "password", source = "password")
     User toEntity(SignupRequest request, String password, boolean enabled, Set<Role> authorities);

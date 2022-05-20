@@ -1,9 +1,8 @@
 package ru.matcha.exceptions.handlers;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import ru.matcha.models.responces.ResponseMessage;
 
@@ -14,12 +13,11 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationExceptionHandler implements AuthenticationEntryPoint {
+public class JwtExceptionHandler {
 
     private final ObjectWriter objectWriter;
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, JwtException authException) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().print(

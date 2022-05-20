@@ -10,11 +10,12 @@ import ru.matcha.models.entities.User;
 import ru.matcha.models.requests.LoginRequest;
 import ru.matcha.models.requests.SignupRequest;
 import ru.matcha.models.requests.TokenRefreshRequest;
-import ru.matcha.models.responces.UserResponse;
+import ru.matcha.models.responces.CurrentUserResponse;
 import ru.matcha.models.responces.jwt.TokenResponse;
 import ru.matcha.services.AuthService;
 import ru.matcha.services.RefreshTokenService;
 
+import javax.security.auth.login.CredentialException;
 import javax.validation.Valid;
 
 @RestController
@@ -26,13 +27,13 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
-    public ResponseEntity<TokenResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws CredentialException {
 
         return ResponseEntity.ok(authService.authenticateUser(loginRequest));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws EmailAlreadyExistsException {
+    public ResponseEntity<TokenResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws EmailAlreadyExistsException, CredentialException {
 
         return ResponseEntity.ok(authService.registerUser(signUpRequest));
     }
@@ -44,7 +45,7 @@ public class AuthController {
     }
 
     @GetMapping("/currentUser")
-    public ResponseEntity<UserResponse> currentUser(Authentication authentication) {
+    public ResponseEntity<CurrentUserResponse> currentUser(Authentication authentication) {
 
         return ResponseEntity.ok(authService.getCurrentUser((User) authentication.getPrincipal()));
     }

@@ -6,10 +6,13 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Value
-public class UserResponse {
+public class CurrentUserResponse {
     String id;
     String username;
     String email;
+    Set<String> roles;
+    boolean enabled;
+    boolean active;
     String gender;
     String orientation;
     Set<String> preferences;

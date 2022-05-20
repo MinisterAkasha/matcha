@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import ru.matcha.config.UserChecker;
 
 import static ru.matcha.config.jwt.JwtLogConstraint.*;
 
@@ -19,9 +21,10 @@ import static ru.matcha.config.jwt.JwtLogConstraint.*;
 public class JwtProvider implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
-    private final JwtChecker jwtChecker;
+    private final UserChecker userChecker;
 
     @Override
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         UserDetails user = userDetailsService.loadUserByUsername(email);
@@ -30,7 +33,7 @@ public class JwtProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException(String.format(USER_NOT_FOUND, email));
         }
         try {
-            jwtChecker.check(user);
+            userChecker.check(user);
             log.info(SUCCESS_AUTHENTICATE, email);
             return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         } catch (AuthenticationException ex) {

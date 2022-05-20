@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "t_user_role_link",
             joinColumns = @JoinColumn(name = "user_id"),
