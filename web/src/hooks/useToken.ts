@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './storeHooks';
-import { setCredentials } from '../store/redusers/auth';
+import { setCredentials, logout } from '../store/redusers/auth';
 
 export const useToken = () => {
 	const getToken = () => {
@@ -10,14 +10,16 @@ export const useToken = () => {
 		};
 	};
 
-	const { token } = useAppSelector((store) => store.token);
+	const { token, isAuth } = useAppSelector((store) => store.auth);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const { accessToken, refreshToken } = getToken();
 
-		if (accessToken && !token) {
+		if (accessToken && !token && !isAuth) {
 			dispatch(setCredentials({ token: accessToken || '', refreshToken: refreshToken || '' }));
+		} else if (!accessToken && !token && isAuth) {
+			dispatch(logout());
 		}
 	});
 

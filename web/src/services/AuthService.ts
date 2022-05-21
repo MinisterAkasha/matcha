@@ -5,7 +5,7 @@ import { baseQueryWithReauth } from '../http/interceptor';
 
 export const authAPI = createApi({
 	reducerPath: 'authAPI',
-	tagTypes: ['auth'],
+	tagTypes: ['auth', 'currentUser'],
 	baseQuery: baseQueryWithReauth,
 	endpoints: (build) => ({
 		logIn: build.mutation<TokenData, LoginRequestData>({

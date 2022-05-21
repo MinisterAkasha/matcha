@@ -3,10 +3,12 @@ import { User } from '../../../models/user';
 
 interface AuthState {
 	token: string | null;
+	isAuth: boolean;
 }
 
 const initialState: AuthState = {
 	token: localStorage.getItem('access_token') || null,
+	isAuth: !!localStorage.getItem('access_token') || false,
 };
 
 export const AuthSlice = createSlice({
@@ -18,10 +20,13 @@ export const AuthSlice = createSlice({
 			{ payload: { token, refreshToken } }: PayloadAction<{ token: string; refreshToken: string }>,
 		) => {
 			state.token = token;
+			state.isAuth = true;
 			localStorage.setItem('access_token', token);
 			localStorage.setItem('refresh_token', refreshToken);
 		},
-		logout: () => {
+		logout: (state) => {
+			state.token = null;
+			state.isAuth = false;
 			localStorage.removeItem('access_token');
 			localStorage.removeItem('refresh_token');
 		},

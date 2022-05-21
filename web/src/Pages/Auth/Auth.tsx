@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
+import { Navigate, useNavigate } from 'react-router-dom';
 import SignUpForm from '../../Components/SignUpForm/SignUpForm';
 import LoginForm from '../../Components/LoginForm/LoginForm';
 import Button from '../../Components/Button/Button';
 import { useAccessibleRoute } from '../../hooks/useAccessibleRoute';
 import { RoutesPath } from '../../Routing/Routes';
+import { useToken } from '../../hooks/useToken';
 
 type SideType = 'left' | 'right';
 
@@ -126,6 +128,16 @@ const OverlayPanel = styled.div<{ overlaySide: SideType }>`
 
 const Auth = () => {
 	const [activeSide, setActiveSide] = useState<SideType>('left');
+	const { token } = useToken();
+	const navigate = useNavigate();
+
+	console.log('token', token);
+
+	if (token) {
+		console.log('redirect to /');
+
+		return <Navigate to={RoutesPath.MAIN} replace />;
+	}
 
 	return (
 		<PageContainer>

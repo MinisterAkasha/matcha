@@ -1,15 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authAPI } from '../services/AuthService';
 import { AuthSlice, logout } from './redusers/auth';
+import { currentUserApi } from '../services/CurrentUserService';
 
 const appReducer = combineReducers({
-	token: AuthSlice.reducer,
+	auth: AuthSlice.reducer,
 	[authAPI.reducerPath]: authAPI.reducer,
+	[currentUserApi.reducerPath]: currentUserApi.reducer,
 });
 
 // @ts-ignore
 const rootReducer = (state, action) => {
 	if (logout.match(action)) {
+		console.log('logout in reduser');
 		state = undefined;
 	}
 

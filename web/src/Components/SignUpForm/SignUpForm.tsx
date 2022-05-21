@@ -63,8 +63,8 @@ const SignUpForm = () => {
 	const { signup } = useAuth();
 
 	const onFinish = useCallback(async () => {
-		const { email, password, name } = form.getFieldsValue();
-		await signup.request({ email, password, name });
+		const { email, password, username } = form.getFieldsValue();
+		await signup.request({ email, password, username });
 	}, []);
 
 	return (
@@ -78,7 +78,7 @@ const SignUpForm = () => {
 				validateMessages={validateMessages}
 			>
 				<StyledTitle>Регистрация</StyledTitle>
-				<Form.Item rules={[{ required: true, message: 'Введите полное имя' }]} name="name">
+				<Form.Item rules={[{ required: true, message: 'Введите полное имя' }]} name="username">
 					<Input placeholder="Имя" />
 				</Form.Item>
 				<Form.Item rules={[{ required: true, type: 'email' }]} name="email">

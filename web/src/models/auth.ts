@@ -4,10 +4,10 @@ export interface LoginRequestData {
 }
 
 export interface SignupData extends LoginRequestData {
-	name: string;
+	username: string;
 }
 
 export interface TokenData {
-	access_token: string;
-	refresh_token: string;
+	accessToken: string;
+	refreshToken: string;
 }
