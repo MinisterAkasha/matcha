@@ -12,7 +12,6 @@ const appReducer = combineReducers({
 // @ts-ignore
 const rootReducer = (state, action) => {
 	if (logout.match(action)) {
-		console.log('logout in reduser');
 		state = undefined;
 	}
 

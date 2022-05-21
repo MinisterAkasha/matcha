@@ -4,9 +4,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import SignUpForm from '../../Components/SignUpForm/SignUpForm';
 import LoginForm from '../../Components/LoginForm/LoginForm';
 import Button from '../../Components/Button/Button';
-import { useAccessibleRoute } from '../../hooks/useAccessibleRoute';
 import { RoutesPath } from '../../Routing/Routes';
 import { useToken } from '../../hooks/useToken';
+import { useAppSelector } from '../../hooks/storeHooks';
 
 type SideType = 'left' | 'right';
 
@@ -128,14 +128,9 @@ const OverlayPanel = styled.div<{ overlaySide: SideType }>`
 
 const Auth = () => {
 	const [activeSide, setActiveSide] = useState<SideType>('left');
-	const { token } = useToken();
-	const navigate = useNavigate();
+	const { isAuth } = useAppSelector((state) => state.auth);
 
-	console.log('token', token);
-
-	if (token) {
-		console.log('redirect to /');
-
+	if (isAuth) {
 		return <Navigate to={RoutesPath.MAIN} replace />;
 	}
 

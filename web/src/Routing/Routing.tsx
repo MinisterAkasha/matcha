@@ -3,12 +3,14 @@ import { Route, Routes } from 'react-router-dom';
 import { RoutesPath } from './Routes';
 import Main from '../Pages/Main/Main';
 import Auth from '../Pages/Auth/Auth';
-import { useAccessibleRoute } from '../hooks/useAccessibleRoute';
 import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 import { useToken } from '../hooks/useToken';
+import { useAppSelector } from '../hooks/storeHooks';
 
 const Routing = () => {
-	const { token } = useToken();
+	const { isAuth } = useAppSelector((state) => state.auth);
+
+	console.log('isAuth', isAuth);
 
 	return (
 		<Routes>
@@ -17,7 +19,7 @@ const Routing = () => {
 			<Route
 				path={RoutesPath.MAIN}
 				element={
-					<ProtectedRoute isAllowed={!!token}>
+					<ProtectedRoute isAllowed={isAuth}>
 						<Main />
 					</ProtectedRoute>
 				}
