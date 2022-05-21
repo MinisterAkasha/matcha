@@ -4,7 +4,6 @@ import ru.matcha.exceptions.EmailAlreadyExistsException;
 import ru.matcha.models.entities.User;
 import ru.matcha.models.requests.LoginRequest;
 import ru.matcha.models.requests.SignupRequest;
-import ru.matcha.models.responces.CurrentUserResponse;
 import ru.matcha.models.responces.jwt.TokenResponse;
 
 import javax.security.auth.login.CredentialException;
@@ -18,6 +17,4 @@ public interface AuthService {
 
     @Transactional
     void logout(User user);
-
-    CurrentUserResponse getCurrentUser(User user);
 }

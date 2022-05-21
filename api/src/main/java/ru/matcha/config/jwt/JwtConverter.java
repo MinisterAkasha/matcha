@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static ru.matcha.config.jwt.JwtLogConstraint.*;
+import static ru.matcha.constraints.LogConstraint.*;
 
 @Log4j2
 @Component

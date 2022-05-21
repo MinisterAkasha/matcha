@@ -20,7 +20,6 @@ import ru.matcha.models.entities.User;
 import ru.matcha.models.dto.RoleDto;
 import ru.matcha.models.requests.LoginRequest;
 import ru.matcha.models.requests.SignupRequest;
-import ru.matcha.models.responces.CurrentUserResponse;
 import ru.matcha.models.responces.jwt.TokenResponse;
 import ru.matcha.repositories.UserRepository;
 import ru.matcha.services.AuthService;
@@ -29,13 +28,12 @@ import ru.matcha.services.RefreshTokenService;
 import javax.security.auth.login.CredentialException;
 import java.util.Collections;
 
+import static ru.matcha.constraints.ExceptionConstraint.*;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-
-    private static final String EMAIL_ALREADY_EXISTS = "Пользователь с email %s уже зарегистрирован.";
-    private static final String LOGOUT_ERROR = "Ошибка при выходе";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -46,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenMapper tokenMapper;
 
     @Override
+    @Transactional
     public TokenResponse registerUser(SignupRequest signUpRequest) throws EmailAlreadyExistsException, CredentialException {
         if (userRepository.existsByEmail(signUpRequest.getEmail()).equals(true)) {
             throw new EmailAlreadyExistsException(String.format(EMAIL_ALREADY_EXISTS, signUpRequest.getEmail()));
@@ -68,13 +67,13 @@ public class AuthServiceImpl implements AuthService {
         User user = (User) userDetails.getPrincipal();
 
         if (!encoder.matches((String) authentication.getCredentials(), user.getPassword()))
-            throw new CredentialException("Ошибка при вводе пароля");
+            throw new CredentialException(PASSWORD_ERROR);
 
         String jwt = jwtUtils.generateJwtToken(user);
 
         refreshTokenService.deleteByUserId(user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
-
+        SecurityContextHolder.getContext().setAuthentication(userDetails);
         return tokenMapper.toRs(jwt, refreshToken.getToken());
     }
 
@@ -85,10 +84,5 @@ public class AuthServiceImpl implements AuthService {
             throw new LogOutException(LOGOUT_ERROR);
         refreshTokenService.deleteByUserId(user.getId());
         SecurityContextHolder.clearContext();
-    }
-
-    @Override
-    public CurrentUserResponse getCurrentUser(User user) {
-        return userMapper.toUserRs(user);
     }
 }

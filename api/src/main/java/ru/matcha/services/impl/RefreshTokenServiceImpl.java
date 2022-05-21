@@ -18,13 +18,11 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.UUID;
 
+import static ru.matcha.constraints.LogConstraint.*;
+
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
-
-    private static final String REFRESH_TOKEN_NOT_FOUND = "Токен не найден. Пожалуйста, повторите вход";
-    private static final String REFRESH_TOKEN_EXPIRED = "Срок действия токена обновления истек. Пожалуйста, повторите вход";
-    private static final String LOGOUT_ERROR = "Ошибка при выходе";
 
     @Value("${token.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
