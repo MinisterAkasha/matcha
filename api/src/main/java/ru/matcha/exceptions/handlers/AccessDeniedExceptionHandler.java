@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import ru.matcha.models.responces.ResponseMessage;
+import ru.matcha.models.responces.exeption.ErrorResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ public class AccessDeniedExceptionHandler implements AccessDeniedHandler {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().print(
                 objectWriter.writeValueAsString(
-                        ResponseMessage.builder()
+                        ErrorResponse.builder()
                                 .message(accessDeniedException.getMessage())
                                 .errorCode(HttpServletResponse.SC_FORBIDDEN)
                                 .build()

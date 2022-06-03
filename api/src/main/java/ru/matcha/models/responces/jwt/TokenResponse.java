@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class TokenResponse {
-    String tokenType = "Bearer";
+    boolean success;
     String accessToken;
     String refreshToken;
 }

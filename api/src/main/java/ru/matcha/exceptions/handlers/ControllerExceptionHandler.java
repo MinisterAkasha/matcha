@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.matcha.exceptions.EmailAlreadyExistsException;
 import ru.matcha.exceptions.TokenRefreshException;
-import ru.matcha.models.responces.ResponseMessage;
+import ru.matcha.models.responces.exeption.ErrorResponse;
+import ru.matcha.models.responces.exeption.SuccessResponse;
 
 import javax.security.auth.login.LoginException;
 
@@ -18,8 +19,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage handlerBindException(BindException ex) {
-        return ResponseMessage.builder()
+    public ErrorResponse handlerBindException(BindException ex) {
+        return ErrorResponse.builder()
                 .message(ex.getBindingResult().getFieldErrors())
                 .errorCode(HttpStatus.BAD_REQUEST.value())
                 .build();
@@ -27,8 +28,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
-        return ResponseMessage.builder()
+    public ErrorResponse handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+        return ErrorResponse.builder()
                 .message(ex.getMessage())
                 .errorCode(HttpStatus.BAD_REQUEST.value())
                 .build();
@@ -36,8 +37,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseMessage handlerTokenRefreshException(TokenRefreshException ex) {
-        return ResponseMessage.builder()
+    public ErrorResponse handlerTokenRefreshException(TokenRefreshException ex) {
+        return ErrorResponse.builder()
                 .message(ex.getMessage())
                 .errorCode(HttpStatus.FORBIDDEN.value())
                 .build();
@@ -45,8 +46,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(JwtException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseMessage handlerInvalidJwtTokenException(JwtException ex) {
-        return ResponseMessage.builder()
+    public ErrorResponse handlerInvalidJwtTokenException(JwtException ex) {
+        return ErrorResponse.builder()
                 .message(ex.getMessage())
                 .errorCode(HttpStatus.FORBIDDEN.value())
                 .build();
@@ -54,19 +55,19 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseMessage handlerUsernameNotFoundException(UsernameNotFoundException ex) {
-        return ResponseMessage.builder()
+    public ErrorResponse handlerUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ErrorResponse.builder()
                 .message(ex.getMessage())
                 .errorCode(HttpStatus.UNAUTHORIZED.value())
                 .build();
     }
 
     @ExceptionHandler(LoginException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseMessage handlerLoginException(LoginException ex) {
-        return ResponseMessage.builder()
+    @ResponseStatus(HttpStatus.OK)
+    public SuccessResponse handlerLoginException(LoginException ex) {
+        return SuccessResponse.builder()
                 .message(ex.getMessage())
-                .errorCode(HttpStatus.UNAUTHORIZED.value())
+                .success(false)
                 .build();
     }
 }

@@ -51,7 +51,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshTokenRepository.findByToken(requestRefreshToken)
                 .map(this::verifyExpiration)
                 .map(RefreshToken::getUser)
-                .map(user -> tokenMapper.toRs(jwtUtils.generateTokenFromEmail(user.getEmail()), requestRefreshToken))
+                .map(user -> tokenMapper.toRs(true, jwtUtils.generateTokenFromEmail(user.getEmail()), requestRefreshToken))
                 .orElseThrow(() -> new TokenRefreshException(REFRESH_TOKEN_NOT_FOUND));
     }
 

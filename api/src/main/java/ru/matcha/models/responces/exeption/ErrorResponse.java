@@ -1,4 +1,4 @@
-package ru.matcha.models.responces;
+package ru.matcha.models.responces.exeption;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Value
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseMessage {
+public class ErrorResponse {
     Integer errorCode;
     String message;
 
@@ -49,8 +49,8 @@ public class ResponseMessage {
             return this;
         }
 
-        public ResponseMessage build() {
-            return new ResponseMessage(errorCode, message);
+        public ErrorResponse build() {
+            return new ErrorResponse(errorCode, message);
         }
     }
 }

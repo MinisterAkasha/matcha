@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.matcha.models.responces.ResponseMessage;
+import ru.matcha.models.responces.exeption.ErrorResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ public class JwtExceptionHandler {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().print(
                 objectWriter.writeValueAsString(
-                        ResponseMessage.builder()
+                        ErrorResponse.builder()
                                 .message(authException.getMessage())
                                 .errorCode(HttpServletResponse.SC_UNAUTHORIZED)
                                 .build()

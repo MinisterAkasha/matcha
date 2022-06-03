@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenService.deleteByUserId(user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
         SecurityContextHolder.getContext().setAuthentication(userDetails);
-        return tokenMapper.toRs(jwt, refreshToken.getToken());
+        return tokenMapper.toRs(true, jwt, refreshToken.getToken());
     }
 
     @Override

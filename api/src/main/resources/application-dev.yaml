@@ -1,0 +1,9 @@
+spring:
+  mail:
+    host: smtp.yandex.ru
+    username: moranton110194@yandex.ru
+    password: aoqvgrjkiozqsafa
+    port: 465
+    protocol: smtps
+mail:
+  debug: false

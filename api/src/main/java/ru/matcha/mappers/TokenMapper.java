@@ -11,7 +11,7 @@ import java.time.Instant;
 @Mapper
 public interface TokenMapper {
 
-    TokenResponse toRs(String accessToken, String refreshToken);
+    TokenResponse toRs(Boolean success, String accessToken, String refreshToken);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
