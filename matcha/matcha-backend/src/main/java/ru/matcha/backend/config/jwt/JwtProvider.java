@@ -31,7 +31,6 @@ public class JwtProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException(String.format(ExceptionConstraint.USER_NOT_FOUND, email));
         }
         try {
-            log.info(LogConstraint.SUCCESS_AUTHENTICATE, email);
             return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         } catch (AuthenticationException ex) {
             log.error(ex.getMessage());

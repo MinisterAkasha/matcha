@@ -1,12 +1,10 @@
 server:
-  servlet:
-    context-path: /access
-  error:
-    include-message: always
-  port: 81
+  port: 8081
 spring:
   profiles:
     active: @activatedProperties@
+  application:
+    name: access
 token:
   jwtSecret: matchaSecretKey
   jwtExpirationMs: 3600000

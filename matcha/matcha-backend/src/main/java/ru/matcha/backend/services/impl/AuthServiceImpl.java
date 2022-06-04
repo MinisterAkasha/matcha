@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.matcha.backend.constraints.LogConstraint;
 import ru.matcha.backend.dto.RoleImpl;
 import ru.matcha.backend.dto.UserDetailsImpl;
 import ru.matcha.backend.services.RestService;
@@ -75,6 +76,7 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenService.deleteByUserId(user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
         SecurityContextHolder.getContext().setAuthentication(userDetails);
+        log.info(LogConstraint.SUCCESS_AUTHENTICATE, user.getEmail());
         return tokenMapper.toRs(true, jwt, refreshToken.getToken());
     }
 

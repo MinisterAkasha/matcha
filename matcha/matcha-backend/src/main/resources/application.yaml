@@ -3,7 +3,7 @@ server:
     context-path: /api
   error:
     include-message: always
-  port: 80
+  port: 8080
 spring:
   profiles:
     active: @activatedProperties@
@@ -17,6 +17,8 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: test
     password: test
+  application:
+    name: backend
 logging:
   level:
     org.springframework:
@@ -28,4 +30,4 @@ token:
 
 matcha:
   access:
-    url: http://localhost:81/access
+    url: http://access
