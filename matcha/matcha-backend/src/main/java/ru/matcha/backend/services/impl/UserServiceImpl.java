@@ -1,10 +1,12 @@
 package ru.matcha.backend.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.matcha.api.models.responses.UserList;
 import ru.matcha.backend.dto.UserDetailsImpl;
 import ru.matcha.backend.mappers.UserMapper;
 import ru.matcha.api.models.responses.CurrentUserResponse;
@@ -30,5 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public CurrentUserResponse getCurrentUser(UserDetailsImpl user) {
         return userMapper.toUserRs(user);
+    }
+
+    @Override
+    public UserList getAll(int limit, int offset) {
+        return userMapper.toDto(userRepository.findAll(PageRequest.of(offset, limit)));
     }
 }

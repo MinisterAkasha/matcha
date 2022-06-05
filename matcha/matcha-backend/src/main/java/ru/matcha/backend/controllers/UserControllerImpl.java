@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.matcha.api.controllers.UserController;
 import ru.matcha.backend.dto.UserDetailsImpl;
 import ru.matcha.api.models.responses.CurrentUserResponse;
+import ru.matcha.api.models.responses.UserList;
 import ru.matcha.backend.services.UserService;
 
 @RestController
@@ -21,5 +22,10 @@ public class UserControllerImpl implements UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(userService.getCurrentUser((UserDetailsImpl) authentication.getPrincipal()));
+    }
+
+    @Override
+    public ResponseEntity<UserList> getAll(int limit, int offset) {
+        return ResponseEntity.ok(userService.getAll(limit, offset));
     }
 }

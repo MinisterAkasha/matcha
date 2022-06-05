@@ -27,7 +27,9 @@
     <properties>
         <java.version>8</java.version>
         <api.version>1.0-SNAPSHOT</api.version>
+        <datasourece.version>1.0-SNAPSHOT</datasourece.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
+        <mapstruct.version>1.5.0.Final</mapstruct.version>
     </properties>
 
     <dependencies>
@@ -35,6 +37,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
     </dependencies>
 

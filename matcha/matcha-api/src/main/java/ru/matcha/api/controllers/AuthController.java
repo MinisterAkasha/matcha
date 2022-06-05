@@ -1,5 +1,6 @@
 package ru.matcha.api.controllers;
 
+import org.springframework.validation.annotation.Validated;
 import ru.matcha.api.models.requests.SignupRequest;
 import ru.matcha.api.models.requests.LoginRequest;
 import ru.matcha.api.models.requests.TokenRefreshRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.security.auth.login.CredentialException;
 import javax.validation.Valid;
 
+@Validated
 @RequestMapping("/auth")
 public interface AuthController {
 

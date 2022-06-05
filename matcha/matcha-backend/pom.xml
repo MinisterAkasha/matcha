@@ -29,11 +29,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
@@ -44,14 +39,14 @@
         </dependency>
         <dependency>
             <groupId>ru.matcha</groupId>
-            <artifactId>matha-api</artifactId>
+            <artifactId>matcha-api</artifactId>
             <version>${api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ru.matcha</groupId>
             <artifactId>matcha-datasource</artifactId>
-            <version>${api.version}</version>
+            <version>${datasourece.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
