@@ -30,4 +30,4 @@ token:
 
 matcha:
   access:
-    url: http://access
+    url: http://access/jwt

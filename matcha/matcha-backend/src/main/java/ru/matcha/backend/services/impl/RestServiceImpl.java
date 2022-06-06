@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.matcha.backend.services.RestService;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class RestServiceImpl implements RestService {
@@ -19,5 +21,9 @@ public class RestServiceImpl implements RestService {
     @Override
     public <T, P> ResponseEntity<P> postAccess(String uri, T request, Class<P> responseType) {
         return restTemplate.postForEntity(urlAccessService + uri, request, responseType);
+    }
+
+    public <T> ResponseEntity<T> getAccess(String uri, Map<String, ?> request, Class<T> responseType) {
+        return restTemplate.getForEntity(urlAccessService + uri, responseType, request);
     }
 }

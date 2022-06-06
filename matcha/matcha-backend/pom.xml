@@ -40,14 +40,10 @@
         <dependency>
             <groupId>ru.matcha</groupId>
             <artifactId>matcha-api</artifactId>
-            <version>${api.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ru.matcha</groupId>
             <artifactId>matcha-datasource</artifactId>
-            <version>${datasourece.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -14,6 +14,7 @@ import ru.matcha.api.models.responses.exeption.ErrorResponse;
 import ru.matcha.api.models.responses.exeption.SuccessResponse;
 
 import javax.security.auth.login.LoginException;
+import javax.validation.ValidationException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,6 +24,15 @@ public class ControllerExceptionHandler {
     public ErrorResponse handlerBindException(BindException ex) {
         return ErrorResponse.builder()
                 .message(ex.getBindingResult().getFieldErrors())
+                .errorCode(HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerValidationException(ValidationException ex) {
+        return ErrorResponse.builder()
+                .message(ex.getMessage())
                 .errorCode(HttpStatus.BAD_REQUEST.value())
                 .build();
     }
@@ -50,7 +60,7 @@ public class ControllerExceptionHandler {
     public ErrorResponse handlerInvalidJwtTokenException(JwtException ex) {
         return ErrorResponse.builder()
                 .message(ex.getMessage())
-                .errorCode(HttpStatus.FORBIDDEN.value())
+                .errorCode(ex.getCode())
                 .build();
     }
 

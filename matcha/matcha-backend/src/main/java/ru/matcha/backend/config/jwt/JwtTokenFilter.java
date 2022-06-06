@@ -1,6 +1,7 @@
 package ru.matcha.backend.config.jwt;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,16 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log4j2
+@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtConverter jwtConverter;
-    @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
-    @Autowired
-    private JwtExceptionHandler jwtExceptionHandler;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final JwtConverter jwtConverter;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtExceptionHandler jwtExceptionHandler;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)

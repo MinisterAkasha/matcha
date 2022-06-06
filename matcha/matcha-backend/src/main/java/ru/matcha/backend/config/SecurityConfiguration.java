@@ -11,7 +11,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.matcha.backend.config.jwt.JwtConverter;
 import ru.matcha.backend.config.jwt.JwtTokenFilter;
+import ru.matcha.backend.exceptions.handlers.JwtExceptionHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -30,8 +32,11 @@ public class SecurityConfiguration {
             "/test/all"
     };
 
+    private final AuthenticationConfiguration authenticationConfiguration;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
+    private final JwtExceptionHandler jwtExceptionHandler;
+    private final JwtConverter jwtConverter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,17 +55,17 @@ public class SecurityConfiguration {
                     .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                     .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//                    .authenticationManager(authenticationManager())
+                    .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
     @Bean
-    public JwtTokenFilter jwtTokenFilter() {
-        return new JwtTokenFilter();
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    private JwtTokenFilter jwtTokenFilter() throws Exception {
+        return new JwtTokenFilter(jwtConverter, authenticationEntryPoint, jwtExceptionHandler, authenticationManager());
     }
 }

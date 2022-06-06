@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.matcha.access.api.services.JwtService;
 
 import java.util.Date;
@@ -14,13 +15,15 @@ import static ru.matcha.access.api.constraints.LogConstraint.*;
 @Service
 public class JwtServiceImpl implements JwtService {
 
+    private static final String TOKEN_PREFIX = "Bearer ";
+
     @Value("${token.jwtSecret}")
     private String jwtSecret;
     @Value("${token.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     @Override
-    public String generateJwt(String email) {
+    public String generate(String email) {
         return Jwts.builder().setSubject(email).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
@@ -32,7 +35,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public void validateJwt(String jwt) {
+    public void validate(String jwt) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt);
         } catch (SignatureException e) {
@@ -51,5 +54,13 @@ public class JwtServiceImpl implements JwtService {
             log.error(JWT_CLAIMS, e.getMessage());
             throw e;
         }
+    }
+
+    public String parse(String jwt) {
+        if (!StringUtils.startsWithIgnoreCase(jwt, TOKEN_PREFIX)) {
+            return null;
+        }
+
+        return jwt.substring(TOKEN_PREFIX.length());
     }
 }

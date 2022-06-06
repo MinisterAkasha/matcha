@@ -25,7 +25,7 @@
     </modules>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <api.version>1.0-SNAPSHOT</api.version>
         <datasourece.version>1.0-SNAPSHOT</datasourece.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
@@ -53,6 +53,16 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>ru.matcha</groupId>
+                <artifactId>matcha-api</artifactId>
+                <version>${api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.matcha</groupId>
+                <artifactId>matcha-datasource</artifactId>
+                <version>${datasourece.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -91,7 +101,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.20</version>
+                            <version>1.18.24</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -101,7 +111,7 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
+                            <version>1.5.1.Final</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>

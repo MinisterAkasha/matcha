@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         if (!encoder.matches((String) authentication.getCredentials(), user.getPassword()))
             throw new CredentialException(PASSWORD_ERROR);
 
-        String jwt = restService.postAccess("/generateJwt", user.getEmail(), String.class).getBody();
+        String jwt = restService.postAccess("/generate", user.getEmail(), String.class).getBody();
 
         refreshTokenService.deleteByUserId(user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);

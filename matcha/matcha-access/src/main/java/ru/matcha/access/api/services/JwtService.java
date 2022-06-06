@@ -2,9 +2,11 @@ package ru.matcha.access.api.services;
 
 public interface JwtService {
 
-    String generateJwt(String email);
+    String generate(String email);
 
     String getEmail(String jwt);
 
-    void validateJwt(String jwt);
+    void validate(String jwt);
+
+    String parse(String jwt);
 }

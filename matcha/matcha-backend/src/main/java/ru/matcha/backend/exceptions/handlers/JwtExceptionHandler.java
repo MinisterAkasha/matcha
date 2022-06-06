@@ -30,7 +30,7 @@ public class JwtExceptionHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        throw new JwtException(toString(response.getBody()));
+        throw new JwtException(response.getStatusCode().value(), toString(response.getBody()));
     }
 
     private String toString(InputStream inputStream) {
