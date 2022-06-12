@@ -11,3 +11,8 @@ export interface TokenData {
 	accessToken: string;
 	refreshToken: string;
 }
+
+export interface LoginStatus {
+	success: boolean;
+	message?: string;
+}

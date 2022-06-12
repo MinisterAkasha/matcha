@@ -131,7 +131,7 @@ const Auth = () => {
 	const { isAuth } = useAppSelector((state) => state.auth);
 
 	if (isAuth) {
-		return <Navigate to={RoutesPath.MAIN} replace />;
+		return <Navigate to={RoutesPath.FEED} replace={false} />;
 	}
 
 	return (

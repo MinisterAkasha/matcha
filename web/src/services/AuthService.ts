@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { BASE_URL, EndPoints } from '../http/endpoints';
-import { LoginRequestData, TokenData, SignupData } from '../models/auth';
+import { LoginRequestData, TokenData, SignupData, LoginStatus } from '../models/auth';
 import { baseQueryWithReauth } from '../http/interceptor';
 
 export const authAPI = createApi({
@@ -8,7 +8,7 @@ export const authAPI = createApi({
 	tagTypes: ['auth', 'currentUser'],
 	baseQuery: baseQueryWithReauth,
 	endpoints: (build) => ({
-		logIn: build.mutation<TokenData, LoginRequestData>({
+		logIn: build.mutation<LoginStatus & TokenData, LoginRequestData>({
 			query: (data) => ({
 				url: EndPoints.LOG_IN,
 				method: 'POST',
@@ -23,7 +23,7 @@ export const authAPI = createApi({
 			}),
 			invalidatesTags: ['auth'],
 		}),
-		signUp: build.mutation<TokenData, SignupData>({
+		signUp: build.mutation<LoginStatus & TokenData, SignupData>({
 			query: (user) => ({
 				url: EndPoints.SIGN_UP,
 				method: 'POST',
