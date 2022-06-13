@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, Layout as CommonLayout } from 'antd';
 import { useAuth } from '../../hooks/useAuth';
+import HeaderMenu from './HeaderMenu';
 
 const HeaderLayout = styled(CommonLayout.Header)`
 	display: flex;
@@ -17,6 +18,7 @@ const Header = () => {
 
 	return (
 		<HeaderLayout>
+			<HeaderMenu />
 			<LogoutButton onClick={logout.request} type="primary">
 				log out
 			</LogoutButton>
