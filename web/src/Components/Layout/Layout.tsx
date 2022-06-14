@@ -12,6 +12,7 @@ const Layout: FC<any> = ({ children }) => {
 			<CommonLayout>
 				<Sidebar />
 				<Content>{children}</Content>
+				<Sidebar />
 			</CommonLayout>
 		</CommonLayout>
 	);

@@ -7,8 +7,10 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-	token: localStorage.getItem('access_token') || null,
-	isAuth: !!localStorage.getItem('access_token') || false,
+	// token: localStorage.getItem('access_token') || null,
+	// isAuth: !!localStorage.getItem('access_token') || false,
+	token: localStorage.getItem('access_token') || '123',
+	isAuth: !!localStorage.getItem('access_token') || true,
 };
 
 export const AuthSlice = createSlice({
