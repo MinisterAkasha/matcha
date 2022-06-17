@@ -10,6 +10,5 @@ import java.util.List;
 public class UserList {
 
     List<UserResponse> content;
-    boolean hasPrevious;
     boolean hasNext;
 }

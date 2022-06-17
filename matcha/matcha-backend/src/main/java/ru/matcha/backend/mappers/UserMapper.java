@@ -33,12 +33,8 @@ public interface UserMapper {
     UserResponse toDtoRs(User user);
 
     default UserList toDto(Slice<User> users) {
-        if (users.isEmpty()) {
-            return null;
-        }
 
-        return UserList.builder().hasPrevious(users
-                        .hasPrevious())
+        return UserList.builder()
                 .hasNext(users.hasNext())
                 .content(users.getContent().stream().map(this::toDtoRs)
                         .collect(Collectors.toList()))

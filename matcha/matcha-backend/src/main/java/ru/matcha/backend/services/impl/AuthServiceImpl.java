@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.matcha.backend.constraints.ExceptionConstraint;
 import ru.matcha.backend.constraints.LogConstraint;
 import ru.matcha.backend.dto.RoleImpl;
 import ru.matcha.backend.dto.UserDetailsImpl;
@@ -29,9 +30,6 @@ import ru.matcha.backend.services.RefreshTokenService;
 import javax.security.auth.login.CredentialException;
 import java.util.Collections;
 
-import static ru.matcha.backend.constraints.ExceptionConstraint.*;
-import static ru.matcha.backend.constraints.LogConstraint.SUCCESS_LOGOUT;
-
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public TokenResponse registerUser(SignupRequest signUpRequest) throws EmailAlreadyExistsException, CredentialException {
         if (userRepository.existsByEmail(signUpRequest.getEmail()).equals(true)) {
-            throw new EmailAlreadyExistsException(String.format(EMAIL_ALREADY_EXISTS, signUpRequest.getEmail()));
+            throw new EmailAlreadyExistsException(String.format(ExceptionConstraint.EMAIL_ALREADY_EXISTS, signUpRequest.getEmail()));
         }
 
         userRepository.save(
@@ -68,8 +66,10 @@ public class AuthServiceImpl implements AuthService {
         Authentication userDetails = authenticationManager.authenticate(authentication);
         UserDetailsImpl user = (UserDetailsImpl) userDetails.getPrincipal();
 
-        if (!encoder.matches((String) authentication.getCredentials(), user.getPassword()))
-            throw new CredentialException(PASSWORD_ERROR);
+        if (!encoder.matches((String) authentication.getCredentials(), user.getPassword())) {
+            log.info(LogConstraint.PASSWORD_ERROR);
+            throw new CredentialException(ExceptionConstraint.ENTER_ERROR);
+        }
 
         String jwt = restService.postAccess("/generate", user.getEmail(), String.class).getBody();
 
@@ -84,9 +84,9 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void logout(UserDetailsImpl user) {
         if (user == null)
-            throw new LogOutException(LOGOUT_ERROR);
+            throw new LogOutException(ExceptionConstraint.LOGOUT_ERROR);
         refreshTokenService.deleteByUserId(user.getId());
         SecurityContextHolder.clearContext();
-        log.info(SUCCESS_LOGOUT, user.getEmail());
+        log.info(LogConstraint.SUCCESS_LOGOUT, user.getEmail());
     }
 }

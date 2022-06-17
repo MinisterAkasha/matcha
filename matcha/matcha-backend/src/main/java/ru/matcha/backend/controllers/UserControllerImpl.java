@@ -1,11 +1,10 @@
 package ru.matcha.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import ru.matcha.api.controllers.UserController;
+import ru.matcha.api.models.requests.PagebleRequest;
 import ru.matcha.backend.dto.UserDetailsImpl;
 import ru.matcha.api.models.responses.CurrentUserResponse;
 import ru.matcha.api.models.responses.UserList;
@@ -18,14 +17,13 @@ public class UserControllerImpl implements UserController {
     private final UserService userService;
 
     @Override
-    public ResponseEntity<CurrentUserResponse> currentUser() {
+    public CurrentUserResponse currentUser() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(userService.getCurrentUser((UserDetailsImpl) authentication.getPrincipal()));
+        return userService.getCurrentUser((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
     @Override
-    public ResponseEntity<UserList> getAll(int limit, int offset) {
-        return ResponseEntity.ok(userService.getAll(limit, offset));
+    public UserList getAll(PagebleRequest page) {
+        return userService.getAll(page);
     }
 }

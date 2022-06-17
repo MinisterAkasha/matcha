@@ -1,8 +1,6 @@
 package ru.matcha.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import ru.matcha.api.controllers.AuthController;
@@ -24,28 +22,26 @@ public class AuthControllerImpl implements AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @Override
-    public ResponseEntity<TokenResponse> authenticateUser(LoginRequest loginRequest) throws CredentialException {
+    public TokenResponse authenticateUser(LoginRequest loginRequest) throws CredentialException {
 
-        return ResponseEntity.ok(authService.authenticateUser(loginRequest));
+        return authService.authenticateUser(loginRequest);
     }
 
     @Override
-    public ResponseEntity<TokenResponse> registerUser(SignupRequest signUpRequest) throws CredentialException {
+    public TokenResponse registerUser(SignupRequest signUpRequest) throws CredentialException {
 
-        return ResponseEntity.ok(authService.registerUser(signUpRequest));
+        return authService.registerUser(signUpRequest);
     }
 
     @Override
-    public ResponseEntity<TokenResponse> refreshToken(TokenRefreshRequest request) {
+    public TokenResponse refreshToken(TokenRefreshRequest request) {
 
-        return ResponseEntity.ok(refreshTokenService.updateToken(request.getRefreshToken()));
+        return refreshTokenService.updateToken(request.getRefreshToken());
     }
 
     @Override
-    public ResponseEntity<Void> logoutUser() {
+    public void logoutUser() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authService.logout((UserDetailsImpl) authentication.getPrincipal());
-        return ResponseEntity.ok().build();
+        authService.logout((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 }
