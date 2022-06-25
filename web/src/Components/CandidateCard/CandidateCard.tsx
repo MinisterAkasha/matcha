@@ -16,8 +16,7 @@ const StyledCard = styled.div<{ url: string; order: number }>`
 	height: 600px;
 	overflow: hidden;
 	border-radius: 30px;
-	/*transition: transform 0.2s ease;*/
-	/*transform-origin: bottom center;*/
+	transition: transform 0.1s ease;
 	cursor: pointer;
 	${({ url, order }) => css`
 		background: red url(${url}) center / cover no-repeat;
@@ -59,108 +58,18 @@ const Shadow = styled.div`
 
 const CandidateCard = ({ url, order }: CandidateCardProps) => {
 	const cardRef = useRef<HTMLDivElement>(null);
-	const { current: coords } = useRef<{ x: number | null; y: number | null }>({ x: null, y: null });
-	const animation = useRef(null);
-
-	// Use useRef for mutable variables that we want to persist
-	// without triggering a re-render on their change
-	const requestRef = useRef<number | undefined>();
-	const previousTimeRef = useRef<number | undefined>();
+	const [, setState] = useState(false);
 
 	useTinderCard({
 		ref: cardRef,
-		onSwipe: () => console.log('swipe!!!!'),
-		// onSwipeRequirementFulfilled: () => console.log('onSwipeRequirementFulfilled'),
+		onSwipe: () => null,
+		onSwipeRequirementFulfilled: () => console.log('onSwipeRequirementFulfilled'),
+		preventSwipe: ['up', 'down'],
 	});
 
-	// const animate = (time: number) => {
-	// 	if (previousTimeRef.current) {
-	// 		const deltaTime = time - previousTimeRef.current;
-	//
-	// 		// Pass on a function to the setter of the state
-	// 		// to make sure we always have the latest state
-	// 		// setCount(prevCount => (prevCount + deltaTime * 0.01) % 100);
-	// 	}
-	// 	previousTimeRef.current = time;
-	// 	requestRef.current = requestAnimationFrame(animate);
-	// };
-	//
-	// useEffect(() => {
-	// 	requestRef.current = requestAnimationFrame(animate);
-	//
-	// 	return () => {
-	// 		cancelAnimationFrame(requestRef.current as number);
-	// 	};
-	// }, []);
-	//
-	// useEffect(() => {
-	// 	if (!cardRef.current || !cardRef.current?.addEventListener) {
-	// 		return;
-	// 	}
-	// 	let delta = 0;
-	// 	let side = 1;
-	// 	let needForRAF = true;
-	//
-	// 	const update = () => {
-	// 		needForRAF = true;
-	//
-	// 		if (!cardRef.current) {
-	// 			return;
-	// 		}
-	// 		cardRef.current.style.transform = `rotate(${(delta * side) / 10}deg)`;
-	// 	};
-	//
-	// 	const mouseDownHandler = (event: any) => {
-	// 		if (!cardRef.current) {
-	// 			return;
-	// 		}
-	//
-	// 		coords.x = event.x;
-	// 		coords.y = event.y;
-	//
-	// 		cardRef.current.style.transform = `translateY(-10px)`;
-	// 	};
-	//
-	// 	const mouseMoveHandler = (event: any) => {
-	// 		if (!(coords.y && coords.x) || !cardRef.current) {
-	// 			return;
-	// 		}
-	//
-	// 		const { x, y } = event;
-	// 		delta = Math.sqrt((x - coords.x) ** 2 + (y - coords.y) ** 2);
-	// 		side = x > coords.x ? 1 : -1;
-	//
-	// 		if (needForRAF) {
-	// 			needForRAF = false; // no need to call rAF up until next frame
-	// 			requestAnimationFrame(update); // request 60fps animation
-	// 		}
-	// 	};
-	//
-	// 	const mouseUpHandler = (event: any) => {
-	// 		if (!cardRef.current) {
-	// 			return;
-	// 		}
-	// 		coords.x = null;
-	// 		coords.y = null;
-	// 		delta = 0;
-	//
-	// 		cardRef.current.style.transform = 'rotate(0)';
-	// 	};
-	//
-	// 	cardRef.current.addEventListener('mousedown', mouseDownHandler);
-	// 	cardRef.current.addEventListener('mousemove', mouseMoveHandler);
-	//
-	// 	window.addEventListener('mouseup', mouseUpHandler);
-	//
-	// 	return () => {
-	// 		if (!cardRef.current) {
-	// 			return;
-	// 		}
-	// 		cardRef.current.removeEventListener('mousedown', mouseDownHandler);
-	// 		cardRef.current.removeEventListener('mousemove', mouseMoveHandler);
-	// 		window.removeEventListener('mouseup', mouseUpHandler);
-	// 	};
-	// }, [cardRef]);
+	useEffect(() => {
+		setState(true);
+	}, []);
 
 	return (
 		<StyledCard url={url} order={order} ref={cardRef}>

@@ -6,22 +6,6 @@ const sleep = (ms: number) => {
 	});
 };
 
-function debounce(this: any, f: any, ms: number) {
-	let isCooldown = false;
-
-	return function () {
-		if (isCooldown) return;
-
-		// @ts-ignore
-		// eslint-disable-next-line prefer-rest-params
-		f.apply(this, arguments);
-
-		isCooldown = true;
-
-		setTimeout(() => (isCooldown = false), ms);
-	};
-}
-
 type direction = 'left' | 'right' | 'up' | 'down' | 'none';
 
 interface useTinderCardProps {
@@ -29,7 +13,7 @@ interface useTinderCardProps {
 	flickOnSwipe?: boolean;
 	onSwipe?: (dir: direction) => void;
 	onCardLeftScreen?: (dir: direction) => void;
-	preventSwipe?: Array<string>;
+	preventSwipe?: Array<direction>;
 	swipeRequirementType?: 'velocity' | 'position';
 	swipeThreshold?: number;
 	onSwipeRequirementFulfilled?: (dir: direction) => void;
@@ -147,7 +131,7 @@ const animateBack = async (element: HTMLElement) => {
 	element.style.transform = 'none';
 
 	await sleep(settings.snapBackDuration);
-	element.style.transition = '10ms';
+	element.style.transition = '100ms';
 };
 
 const getSwipeDirection = (property: Coordinates) => {
