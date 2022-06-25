@@ -6,6 +6,11 @@ interface UserGeo {
 	longitude: string; // долгота
 }
 
+interface ImageType {
+	url: string;
+	type: 'AVATAR' | 'REGULAR';
+}
+
 export interface User {
 	name: string;
 	email: string;
@@ -21,4 +26,5 @@ export interface User {
 	block: User[]; // кого пользователь заблокировал
 	history: User[];
 	id: string;
+	images: ImageType[];
 }
